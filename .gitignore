@@ -1,0 +1,41 @@
+# OS Files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# IDE
+.vscode
+.idea
+*.sublime-project
+*.sublime-workspace
+
+# Build artifacts
+dist/
+build/
+*.exe
+
+# Backups
+*.backup
+*.bak
+~*
+
+# Node (if added in future)
+node_modules/
+package-lock.json
+
+# Python cache (if using for local server)
+__pycache__/
+*.pyc
+
+# Local environment
+.env
+.env.local
+
+# Browser storage dumps
+*.localstorage
+
+# OS cache
+.cache
+.AppleDouble
+.LSOverride

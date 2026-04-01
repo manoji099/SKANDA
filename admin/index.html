@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Skanda Engineering</title>
+    <link rel="stylesheet" href="css/admin-style.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h2>⚙️ Skanda</h2>
+                <p>Admin Panel</p>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item active" data-page="dashboard">📊 Dashboard</a>
+                <a href="#" class="nav-item" data-page="customers">👥 Customers</a>
+                <a href="#" class="nav-item" data-page="quotes">📋 Quotes</a>
+                <a href="#" class="nav-item" data-page="orders">📦 Orders</a>
+                <a href="#" class="nav-item" data-page="invoices">💰 Invoices</a>
+                <a href="#" class="nav-item" data-page="challans">📄 Challans</a>
+                <a href="#" class="nav-item" data-page="costing">💵 Job Costing</a>
+                <a href="#" class="nav-item" data-page="reports">📈 Reports</a>
+                <a href="#" class="nav-item" data-page="settings">⚙️ Settings</a>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <!-- HEADER -->
+            <header class="admin-header">
+                <h1>Dashboard</h1>
+                <div class="header-actions">
+                    <button class="btn-icon" id="exportBtn" title="Export Data">📥 Export</button>
+                    <button class="btn-icon" id="syncBtn" title="Sync Data">🔄 Sync</button>
+                    <div class="user-menu">
+                        <span>Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- CONTENT AREA -->
+            <div class="content-wrapper">
+                <!-- DASHBOARD PAGE -->
+                <div id="dashboard-page" class="page-content active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-details">
+                                <h3>Total Customers</h3>
+                                <p class="stat-value" id="totalCustomers">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📋</div>
+                            <div class="stat-details">
+                                <h3>Pending Quotes</h3>
+                                <p class="stat-value" id="pendingQuotes">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📦</div>
+                            <div class="stat-details">
+                                <h3>Active Orders</h3>
+                                <p class="stat-value" id="activeOrders">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">💰</div>
+                            <div class="stat-details">
+                                <h3>Total Revenue</h3>
+                                <p class="stat-value" id="totalRevenue">₹0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Quotes -->
+                    <div class="dashboard-section">
+                        <h2>Recent Quotes</h2>
+                        <table id="recentQuotesTable">
+                            <thead>
+                                <tr>
+                                    <th>Quote ID</th>
+                                    <th>Customer</th>
+                                    <th>Service</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentQuotesBody">
+                                <tr><td colspan="6" style="text-align: center; padding: 2rem;">No recent quotes</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Recent Orders -->
+                    <div class="dashboard-section">
+                        <h2>Recent Orders</h2>
+                        <table id="recentOrdersTable">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentOrdersBody">
+                                <tr><td colspan="6" style="text-align: center; padding: 2rem;">No recent orders</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- CUSTOMERS PAGE -->
+                <div id="customers-page" class="page-content">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h2>Customer Management</h2>
+                        <button class="btn-primary" onclick="openCustomerForm()">+ Add Customer</button>
+                    </div>
+                    <table id="customersTable">
+                        <thead>
+                            <tr>
+                                <th>Customer Name</th>
+                                <th>Company</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Industry</th>
+                                <th>Joined</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customersTableBody">
+                            <tr><td colspan="7" style="text-align: center; padding: 2rem;">No customers</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- QUOTES PAGE -->
+                <div id="quotes-page" class="page-content">
+                    <h2>Quote Management</h2>
+                    <div style="margin-bottom: 1.5rem;">
+                        <label>Filter by Status:</label>
+                        <select id="quoteStatusFilter" style="margin-left: 1rem;">
+                            <option value="">All</option>
+                            <option value="pending">Pending</option>
+                            <option value="quoted">Quoted</option>
+                            <option value="accepted">Accepted</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                    </div>
+                    <table id="quotesTable">
+                        <thead>
+                            <tr>
+                                <th>Quote ID</th>
+                                <th>Customer</th>
+                                <th>Service</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="quotesTableBody">
+                            <tr><td colspan="7" style="text-align: center; padding: 2rem;">No quotes</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ORDERS PAGE -->
+                <div id="orders-page" class="page-content">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h2>Order Management</h2>
+                        <button class="btn-primary" onclick="openOrderForm()">+ Create Order</button>
+                    </div>
+                    <table id="ordersTable">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Due Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody">
+                            <tr><td colspan="6" style="text-align: center; padding: 2rem;">No orders</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- INVOICES PAGE -->
+                <div id="invoices-page" class="page-content">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h2>Invoice Management</h2>
+                        <button class="btn-primary" onclick="openInvoiceForm()">+ Generate Invoice</button>
+                    </div>
+                    <div id="invoicesList"></div>
+                </div>
+
+                <!-- CHALLANS PAGE -->
+                <div id="challans-page" class="page-content">
+                    <h2>Challan Management</h2>
+                    <div id="challansList"></div>
+                </div>
+
+                <!-- JOB COSTING PAGE -->
+                <div id="costing-page" class="page-content">
+                    <h2>Job Costing Sheet</h2>
+                    <form id="costingForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Job Description</label>
+                                <input type="text" id="jobDesc" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Material Cost</label>
+                                <input type="number" id="materialCost" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Machine Hours</label>
+                                <input type="number" id="machineHours" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Hourly Rate (₹)</label>
+                                <input type="number" id="hourlyRate" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Labour Cost</label>
+                                <input type="number" id="labourCost" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Overhead (%)</label>
+                                <input type="number" id="overhead" step="0.01" value="15" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Profit Margin (%)</label>
+                                <input type="number" id="profitMargin" step="0.01" value="20" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">Calculate Cost</button>
+                    </form>
+                    <div id="costingResult"></div>
+                </div>
+
+                <!-- REPORTS PAGE -->
+                <div id="reports-page" class="page-content">
+                    <h2>Reports & Analytics</h2>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem;">
+                        <div style="background: var(--primary-light); padding: 1.5rem; border-radius: 0.5rem;">
+                            <h3>Sales Summary</h3>
+                            <p id="salesSummary">Loading...</p>
+                        </div>
+                        <div style="background: var(--primary-light); padding: 1.5rem; border-radius: 0.5rem;">
+                            <h3>Customer Acquisition</h3>
+                            <p id="customerAcquisition">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SETTINGS PAGE -->
+                <div id="settings-page" class="page-content">
+                    <h2>Settings</h2>
+                    <div style="max-width: 600px;">
+                        <h3>Data Management</h3>
+                        <button class="btn-secondary" onclick="exportAllData()">📥 Export All Data (JSON)</button>
+                        <button class="btn-secondary" onclick="exportQuotesCSV()">📥 Export Quotes (CSV)</button>
+                        <button class="btn-secondary" onclick="exportCustomersCSV()">📥 Export Customers (CSV)</button>
+                        <br><br>
+                        <h3>Danger Zone</h3>
+                        <button class="btn-danger" onclick="if(confirm('Are you sure? This will delete all data!')) { dataStore.resetAllData(); location.reload(); }">🗑️ Reset All Data</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Link to data store -->
+    <script src="../backend/js/data-store.js"></script>
+    <script src="js/admin-main.js"></script>
+</body>
+</html>

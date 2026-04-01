@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://yourusername.github.io/skanda-engineering/sitemap.xml
+
+# Crawl delays
+Crawl-delay: 1
+Request-rate: 1/1s

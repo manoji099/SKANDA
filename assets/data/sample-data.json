@@ -1,0 +1,106 @@
+{
+  "sampleQuotes": [
+    {
+      "id": "QUOTE_1704067200000",
+      "fullName": "Rajesh Kumar",
+      "company": "TechMfg Industries",
+      "email": "rajesh@techmfg.com",
+      "phone": "9876543210",
+      "industry": "automotive",
+      "serviceType": "cnc",
+      "quantity": "150",
+      "projectDescription": "Need CNC machining for automotive transmission brackets. Part size ~200mm x 150mm. Tolerance ±0.1mm. Material: Aluminum 6061-T6. Delivery needed by Jan 30.",
+      "timeline": "normal",
+      "budget": "1l-5l",
+      "additionalNotes": "This is a recurring order. We may have regular monthly orders.",
+      "status": "pending",
+      "createdAt": "2024-01-01T10:30:00Z"
+    },
+    {
+      "id": "QUOTE_1704153600000",
+      "fullName": "Priya Singh",
+      "company": "AeroTech Solutions",
+      "email": "priya@aerotech.com",
+      "phone": "9987654321",
+      "industry": "aerospace",
+      "serviceType": "vmc",
+      "quantity": "50",
+      "projectDescription": "VMC operations for aerospace brackets. Complex 5-axis geometry. Material: Titanium Grade 5. Precision requirements: ±0.05mm. Need 30 units ASAP for prototype validation.",
+      "timeline": "urgent",
+      "budget": "5l-10l",
+      "additionalNotes": "Requires ISO 9001 and AS9100 certification. Quality inspection mandatory.",
+      "status": "quoted",
+      "estimatedAmount": 850000,
+      "createdAt": "2024-01-02T14:15:00Z"
+    }
+  ],
+  "sampleCustomers": [
+    {
+      "id": "CUST_1704067200000",
+      "fullName": "Rajesh Kumar",
+      "company": "TechMfg Industries",
+      "email": "rajesh@techmfg.com",
+      "phone": "9876543210",
+      "industry": "automotive",
+      "source": "website_quote",
+      "createdAt": "2024-01-01T10:30:00Z"
+    },
+    {
+      "id": "CUST_1704153600000",
+      "fullName": "Priya Singh",
+      "company": "AeroTech Solutions",
+      "email": "priya@aerotech.com",
+      "phone": "9987654321",
+      "industry": "aerospace",
+      "source": "website_quote",
+      "createdAt": "2024-01-02T14:15:00Z"
+    },
+    {
+      "id": "CUST_1704240000000",
+      "fullName": "Amit Patel",
+      "company": "Industrial Machinery Ltd",
+      "email": "amit@inmachinery.com",
+      "phone": "9876543200",
+      "industry": "machinery",
+      "source": "direct_contact",
+      "createdAt": "2024-01-03T09:45:00Z"
+    }
+  ],
+  "sampleOrders": [
+    {
+      "id": "ORD_1704240000000",
+      "quoteId": "QUOTE_1704067200000",
+      "customerId": "CUST_1704067200000",
+      "customerName": "Rajesh Kumar",
+      "company": "TechMfg Industries",
+      "serviceType": "cnc",
+      "quantity": 150,
+      "unitPrice": 1500,
+      "amount": 225000,
+      "status": "in_progress",
+      "dueDate": "2024-01-30",
+      "createdAt": "2024-01-05T11:00:00Z"
+    },
+    {
+      "id": "ORD_1704326400000",
+      "quoteId": "QUOTE_1704153600000",
+      "customerId": "CUST_1704153600000",
+      "customerName": "Priya Singh",
+      "company": "AeroTech Solutions",
+      "serviceType": "vmc",
+      "quantity": 30,
+      "unitPrice": 28333,
+      "amount": 850000,
+      "status": "pending",
+      "dueDate": "2024-01-20",
+      "createdAt": "2024-01-06T13:30:00Z"
+    }
+  ],
+  "exportMetadata": {
+    "exportDate": "2024-01-10T15:00:00Z",
+    "version": "1.0",
+    "totalQuotes": 2,
+    "totalCustomers": 3,
+    "totalOrders": 2
+  }
+}
