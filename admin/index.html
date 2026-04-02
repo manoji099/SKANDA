@@ -517,9 +517,16 @@
                 <button class="btn-header btn-sync" id="syncBtn" title="Sync Data">
                     <i class="fas fa-sync"></i> Sync
                 </button>
-                <div style="color: var(--primary-dark); font-weight: 600;">
-                    <i class="fas fa-user-circle" style="font-size: 1.5rem;"></i>
+                <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 1rem; background-color: rgba(255, 107, 0, 0.1); border-radius: 0.35rem;">
+                    <i class="fas fa-user-circle" style="font-size: 1.5rem; color: var(--primary-orange);"></i>
+                    <div style="font-size: 0.9rem;">
+                        <div style="color: var(--primary-dark); font-weight: 600;" id="userEmail">User</div>
+                        <div style="color: #6B7280; font-size: 0.8rem;" id="userRole">Admin</div>
+                    </div>
                 </div>
+                <button class="btn-header" id="logoutBtn" style="background-color: #EF4444; color: white;" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
             </div>
         </header>
 
@@ -929,12 +936,55 @@
     <!-- Bootstrap JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+
+    <!-- Firebase Config & Auth -->
+    <script src="../backend/js/firebase-config.js"></script>
+    <script src="../backend/js/firebase-auth.js"></script>
+    <script src="../backend/js/firebase-datastore.js"></script>
+
     <!-- DataStore -->
     <script src="../backend/js/data-store.js"></script>
 
     <!-- Admin Script -->
     <script>
-        // Page Navigation
+        // ========== AUTHENTICATION CHECK ==========
+        // Check if user is authenticated on page load
+        async function checkAuthentication() {
+            return new Promise((resolve) => {
+                firebaseAuth.onAuthStateChanged((user) => {
+                    if (!user) {
+                        // Not logged in, redirect to login page
+                        window.location.href = './login.html';
+                    } else {
+                        // User is logged in, display user info
+                        updateUserDisplay(user);
+                        resolve(user);
+                    }
+                });
+            });
+        }
+
+        // Update user display in header
+        function updateUserDisplay(user) {
+            document.getElementById('userEmail').textContent = user.email || 'Admin';
+            document.getElementById('userRole').textContent = 'Administrator';
+        }
+
+        // Handle logout
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            if (confirm('Are you sure you want to logout?')) {
+                const result = await firebaseAuth.logout();
+                if (result.success) {
+                    window.location.href = './login.html';
+                }
+            }
+        });
+
+        // ========== PAGE NAVIGATION ==========
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -1096,7 +1146,11 @@
             document.getElementById('costFinalPrice').textContent = finalPrice.toLocaleString('en-IN');
         }
 
-        window.addEventListener('load', () => {
+        window.addEventListener('load', async () => {
+            // Check authentication first
+            await checkAuthentication();
+            
+            // Then load dashboard
             loadDashboard(new DataStore());
         });
 
