@@ -4,82 +4,568 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Skanda Engineering</title>
-    <link rel="stylesheet" href="css/admin-style.css">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-dark: #0B1F3A;
+            --primary-orange: #FF6B00;
+            --primary-light: #F5F7FA;
+            --sidebar-width: 260px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--primary-light);
+            overflow-x: hidden;
+        }
+
+        /* SIDEBAR STYLING */
+        .sidebar {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #0f2850 100%);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: var(--sidebar-width);
+            overflow-y: auto;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+        }
+
+        .sidebar-brand {
+            padding: 1.5rem 1.25rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .sidebar-brand h2 {
+            font-size: 1.5rem;
+            color: var(--primary-orange);
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .sidebar-brand p {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0.5rem 0 0 0;
+        }
+
+        .nav-section {
+            padding: 1rem 0;
+        }
+
+        .nav-section-title {
+            padding: 0 1.25rem 0.5rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            padding: 0.75rem 1.25rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            border-left: 3px solid transparent;
+            margin: 0.25rem 0;
+        }
+
+        .sidebar-nav .nav-link:hover {
+            color: var(--primary-orange);
+            background-color: rgba(255, 107, 0, 0.1);
+            border-left-color: var(--primary-orange);
+        }
+
+        .sidebar-nav .nav-link.active {
+            color: var(--primary-orange);
+            background-color: rgba(255, 107, 0, 0.15);
+            border-left-color: var(--primary-orange);
+            font-weight: 600;
+        }
+
+        .nav-link i {
+            width: 1.2rem;
+            text-align: center;
+        }
+
+        /* MAIN CONTENT */
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+        .admin-header {
+            background: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--primary-orange);
+        }
+
+        .admin-header h1 {
+            margin: 0;
+            color: var(--primary-dark);
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn-header {
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.35rem;
+            border: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-export {
+            background-color: var(--primary-orange);
+            color: white;
+        }
+
+        .btn-export:hover {
+            background-color: #e55a00;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.3);
+        }
+
+        .btn-sync {
+            background-color: #10B981;
+            color: white;
+        }
+
+        .btn-sync:hover {
+            background-color: #059669;
+            transform: translateY(-2px);
+        }
+
+        /* MAIN CONTENT AREA */
+        .content-area {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        /* STAT CARDS */
+        .stat-card {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border-top: 4px solid var(--primary-orange);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .stat-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .stat-card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card-label {
+            font-size: 0.85rem;
+            color: #6B7280;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.75rem;
+        }
+
+        .stat-card-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            line-height: 1;
+        }
+
+        /* SECTION HEADERS */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-header h2 {
+            color: var(--primary-dark);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        /* TABLE STYLING */
+        .table-container {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead th {
+            background-color: var(--primary-dark);
+            color: white;
+            font-weight: 700;
+            border: none;
+            padding: 1.25rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .table tbody td {
+            padding: 1rem 1.25rem;
+            vertical-align: middle;
+            font-size: 0.95rem;
+            border-color: #E5E7EB;
+        }
+
+        .table tbody tr {
+            transition: background-color 0.2s ease;
+        }
+
+        .table tbody tr:hover {
+            background-color: var(--primary-light);
+        }
+
+        /* BADGE STYLING */
+        .badge-pending {
+            background-color: #FCD34D;
+            color: #92400E;
+            font-weight: 600;
+        }
+
+        .badge-quoted {
+            background-color: #BFDBFE;
+            color: #1E40AF;
+            font-weight: 600;
+        }
+
+        .badge-accepted {
+            background-color: #DCFCE7;
+            color: #166534;
+            font-weight: 600;
+        }
+
+        .badge-rejected {
+            background-color: #FECACA;
+            color: #991B1B;
+            font-weight: 600;
+        }
+
+        .badge-in_progress {
+            background-color: #BFDBFE;
+            color: #1E40AF;
+            font-weight: 600;
+        }
+
+        .badge-ready {
+            background-color: #C7D2FE;
+            color: #3730A3;
+            font-weight: 600;
+        }
+
+        .badge-completed {
+            background-color: #DCFCE7;
+            color: #166534;
+            font-weight: 600;
+        }
+
+        /* FORM STYLING */
+        .form-container {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .form-container label {
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary-custom {
+            background-color: var(--primary-orange);
+            color: white;
+            border: none;
+            padding: 0.65rem 1.5rem;
+            border-radius: 0.35rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary-custom:hover {
+            background-color: #e55a00;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.3);
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #6B7280;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #D1D5DB;
+            margin-bottom: 1rem;
+        }
+
+        /* PAGE CONTENT */
+        .page-content {
+            display: none;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 1050;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-wrapper {
+                margin-left: 0;
+            }
+
+            .admin-header {
+                padding: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .admin-header h1 {
+                font-size: 1.25rem;
+            }
+
+            .content-area {
+                padding: 1rem;
+            }
+
+            .stat-card {
+                padding: 1.25rem;
+            }
+
+            .stat-card-value {
+                font-size: 1.75rem;
+            }
+
+            .table {
+                font-size: 0.85rem;
+            }
+
+            .table thead th,
+            .table tbody td {
+                padding: 0.75rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="admin-layout">
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-            <div class="logo">
-                <h2>⚙️ Skanda</h2>
-                <p>Admin Panel</p>
-            </div>
-            <nav class="sidebar-nav">
-                <a href="index.html" class="nav-item active" data-page="dashboard">📊 Dashboard</a>
-                <a href="#" class="nav-item" data-page="customers">👥 Customers</a>
-                <a href="#" class="nav-item" data-page="quotes">📋 Quotes</a>
-                <a href="#" class="nav-item" data-page="orders">📦 Orders</a>
-                <a href="#" class="nav-item" data-page="invoices">💰 Invoices</a>
-                <a href="#" class="nav-item" data-page="challans">📄 Challans</a>
-                <a href="#" class="nav-item" data-page="costing">💵 Job Costing</a>
-                <a href="#" class="nav-item" data-page="reports">📈 Reports</a>
-                <a href="#" class="nav-item" data-page="settings">⚙️ Settings</a>
-            </nav>
-        </aside>
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <h2>⚙️ Skanda</h2>
+            <p>Admin Dashboard</p>
+        </div>
 
-        <!-- MAIN CONTENT -->
-        <main class="main-content">
-            <!-- HEADER -->
-            <header class="admin-header">
-                <h1>Dashboard</h1>
-                <div class="header-actions">
-                    <button class="btn-icon" id="exportBtn" title="Export Data">📥 Export</button>
-                    <button class="btn-icon" id="syncBtn" title="Sync Data">🔄 Sync</button>
-                    <div class="user-menu">
-                        <span>Admin</span>
+        <nav>
+            <div class="nav-section">
+                <div class="nav-section-title">Main</div>
+                <ul class="sidebar-nav">
+                    <li>
+                        <a href="#" class="nav-link active" data-page="dashboard">
+                            <i class="fas fa-chart-line"></i> Dashboard
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Management</div>
+                <ul class="sidebar-nav">
+                    <li>
+                        <a href="#" class="nav-link" data-page="customers">
+                            <i class="fas fa-users"></i> Customers
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link" data-page="quotes">
+                            <i class="fas fa-file-invoice"></i> Quotes
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link" data-page="orders">
+                            <i class="fas fa-box"></i> Orders
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Operations</div>
+                <ul class="sidebar-nav">
+                    <li>
+                        <a href="#" class="nav-link" data-page="invoices">
+                            <i class="fas fa-receipt"></i> Invoices
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link" data-page="challans">
+                            <i class="fas fa-truck"></i> Challans
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link" data-page="costing">
+                            <i class="fas fa-calculator"></i> Job Costing
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Analytics</div>
+                <ul class="sidebar-nav">
+                    <li>
+                        <a href="#" class="nav-link" data-page="reports">
+                            <i class="fas fa-chart-bar"></i> Reports
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">System</div>
+                <ul class="sidebar-nav">
+                    <li>
+                        <a href="#" class="nav-link" data-page="settings">
+                            <i class="fas fa-cog"></i> Settings
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- MAIN WRAPPER -->
+    <div class="main-wrapper">
+        <!-- HEADER -->
+        <header class="admin-header">
+            <h1 id="pageTitle">Dashboard</h1>
+            <div class="header-right">
+                <button class="btn-header btn-export" id="exportBtn" title="Export Data">
+                    <i class="fas fa-download"></i> Export
+                </button>
+                <button class="btn-header btn-sync" id="syncBtn" title="Sync Data">
+                    <i class="fas fa-sync"></i> Sync
+                </button>
+                <div style="color: var(--primary-dark); font-weight: 600;">
+                    <i class="fas fa-user-circle" style="font-size: 1.5rem;"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTENT AREA -->
+        <div class="content-area">
+            <!-- DASHBOARD PAGE -->
+            <div id="dashboard-page" class="page-content active">
+                <!-- KPI CARDS -->
+                <div class="row mb-4">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="stat-card">
+                            <div class="stat-card-icon">👥</div>
+                            <div class="stat-card-label">Total Customers</div>
+                            <div class="stat-card-value" id="totalCustomers">0</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="stat-card">
+                            <div class="stat-card-icon">📋</div>
+                            <div class="stat-card-label">Pending Quotes</div>
+                            <div class="stat-card-value" id="pendingQuotes">0</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="stat-card">
+                            <div class="stat-card-icon">📦</div>
+                            <div class="stat-card-label">Active Orders</div>
+                            <div class="stat-card-value" id="activeOrders">0</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="stat-card">
+                            <div class="stat-card-icon">💰</div>
+                            <div class="stat-card-label">Total Revenue</div>
+                            <div class="stat-card-value" id="totalRevenue">₹0</div>
+                        </div>
                     </div>
                 </div>
-            </header>
 
-            <!-- CONTENT AREA -->
-            <div class="content-wrapper">
-                <!-- DASHBOARD PAGE -->
-                <div id="dashboard-page" class="page-content active">
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon">👥</div>
-                            <div class="stat-details">
-                                <h3>Total Customers</h3>
-                                <p class="stat-value" id="totalCustomers">0</p>
-                            </div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">📋</div>
-                            <div class="stat-details">
-                                <h3>Pending Quotes</h3>
-                                <p class="stat-value" id="pendingQuotes">0</p>
-                            </div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">📦</div>
-                            <div class="stat-details">
-                                <h3>Active Orders</h3>
-                                <p class="stat-value" id="activeOrders">0</p>
-                            </div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">💰</div>
-                            <div class="stat-details">
-                                <h3>Total Revenue</h3>
-                                <p class="stat-value" id="totalRevenue">₹0</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Recent Quotes -->
-                    <div class="dashboard-section">
+                <!-- RECENT QUOTES -->
+                <div class="mb-4">
+                    <div class="section-header">
                         <h2>Recent Quotes</h2>
-                        <table id="recentQuotesTable">
+                    </div>
+                    <div class="table-container">
+                        <table class="table">
                             <thead>
                                 <tr>
                                     <th>Quote ID</th>
@@ -87,19 +573,26 @@
                                     <th>Service</th>
                                     <th>Status</th>
                                     <th>Date</th>
-                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="recentQuotesBody">
-                                <tr><td colspan="6" style="text-align: center; padding: 2rem;">No recent quotes</td></tr>
+                                <tr>
+                                    <td colspan="5" class="empty-state">
+                                        <i class="fas fa-inbox"></i><br>No recent quotes
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
+                </div>
 
-                    <!-- Recent Orders -->
-                    <div class="dashboard-section">
+                <!-- RECENT ORDERS -->
+                <div>
+                    <div class="section-header">
                         <h2>Recent Orders</h2>
-                        <table id="recentOrdersTable">
+                    </div>
+                    <div class="table-container">
+                        <table class="table">
                             <thead>
                                 <tr>
                                     <th>Order ID</th>
@@ -107,188 +600,511 @@
                                     <th>Amount</th>
                                     <th>Status</th>
                                     <th>Date</th>
-                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="recentOrdersBody">
-                                <tr><td colspan="6" style="text-align: center; padding: 2rem;">No recent orders</td></tr>
+                                <tr>
+                                    <td colspan="5" class="empty-state">
+                                        <i class="fas fa-inbox"></i><br>No recent orders
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
+            </div>
 
-                <!-- CUSTOMERS PAGE -->
-                <div id="customers-page" class="page-content">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                        <h2>Customer Management</h2>
-                        <button class="btn-primary" onclick="openCustomerForm()">+ Add Customer</button>
-                    </div>
-                    <table id="customersTable">
+            <!-- CUSTOMERS PAGE -->
+            <div id="customers-page" class="page-content">
+                <div class="section-header">
+                    <h2>Customer Management</h2>
+                    <button class="btn-primary-custom">
+                        <i class="fas fa-plus"></i> Add Customer
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table class="table">
                         <thead>
                             <tr>
-                                <th>Customer Name</th>
+                                <th>Name</th>
                                 <th>Company</th>
                                 <th>Email</th>
                                 <th>Phone</th>
                                 <th>Industry</th>
                                 <th>Joined</th>
-                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="customersTableBody">
-                            <tr><td colspan="7" style="text-align: center; padding: 2rem;">No customers</td></tr>
+                            <tr>
+                                <td colspan="6" class="empty-state">
+                                    <i class="fas fa-inbox"></i><br>No customers yet
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
+            </div>
 
-                <!-- QUOTES PAGE -->
-                <div id="quotes-page" class="page-content">
+            <!-- QUOTES PAGE -->
+            <div id="quotes-page" class="page-content">
+                <div class="section-header">
                     <h2>Quote Management</h2>
-                    <div style="margin-bottom: 1.5rem;">
-                        <label>Filter by Status:</label>
-                        <select id="quoteStatusFilter" style="margin-left: 1rem;">
-                            <option value="">All</option>
+                    <div>
+                        <select id="quoteStatusFilter" class="form-select" style="width: 200px; display: inline-block;">
+                            <option value="">All Statuses</option>
                             <option value="pending">Pending</option>
                             <option value="quoted">Quoted</option>
                             <option value="accepted">Accepted</option>
                             <option value="rejected">Rejected</option>
                         </select>
                     </div>
-                    <table id="quotesTable">
+                </div>
+                <div class="table-container">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th>Quote ID</th>
                                 <th>Customer</th>
                                 <th>Service</th>
-                                <th>Amount</th>
+                                <th>Budget</th>
                                 <th>Status</th>
                                 <th>Date</th>
-                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="quotesTableBody">
-                            <tr><td colspan="7" style="text-align: center; padding: 2rem;">No quotes</td></tr>
+                            <tr>
+                                <td colspan="6" class="empty-state">
+                                    <i class="fas fa-inbox"></i><br>No quotes yet
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
+            </div>
 
-                <!-- ORDERS PAGE -->
-                <div id="orders-page" class="page-content">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                        <h2>Order Management</h2>
-                        <button class="btn-primary" onclick="openOrderForm()">+ Create Order</button>
-                    </div>
-                    <table id="ordersTable">
+            <!-- ORDERS PAGE -->
+            <div id="orders-page" class="page-content">
+                <div class="section-header">
+                    <h2>Order Management</h2>
+                    <button class="btn-primary-custom">
+                        <i class="fas fa-plus"></i> Create Order
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th>Order ID</th>
                                 <th>Customer</th>
+                                <th>Service</th>
                                 <th>Amount</th>
                                 <th>Status</th>
                                 <th>Due Date</th>
-                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="ordersTableBody">
-                            <tr><td colspan="6" style="text-align: center; padding: 2rem;">No orders</td></tr>
+                            <tr>
+                                <td colspan="6" class="empty-state">
+                                    <i class="fas fa-inbox"></i><br>No orders yet
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
+            </div>
 
-                <!-- INVOICES PAGE -->
-                <div id="invoices-page" class="page-content">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                        <h2>Invoice Management</h2>
-                        <button class="btn-primary" onclick="openInvoiceForm()">+ Generate Invoice</button>
+            <!-- INVOICES PAGE -->
+            <div id="invoices-page" class="page-content">
+                <div class="section-header">
+                    <h2>Invoice Management</h2>
+                    <button class="btn-primary-custom">
+                        <i class="fas fa-plus"></i> Generate Invoice
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Invoice ID</th>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Amount</th>
+                                <th>GST</th>
+                                <th>Total</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="invoicesTableBody">
+                            <tr>
+                                <td colspan="7" class="empty-state">
+                                    <i class="fas fa-inbox"></i><br>No invoices yet
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- CHALLANS PAGE -->
+            <div id="challans-page" class="page-content">
+                <div class="section-header">
+                    <h2>Delivery Challans</h2>
+                    <button class="btn-primary-custom">
+                        <i class="fas fa-plus"></i> Create Challan
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Challan ID</th>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Items</th>
+                                <th>Delivered</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="challansTableBody">
+                            <tr>
+                                <td colspan="6" class="empty-state">
+                                    <i class="fas fa-inbox"></i><br>No challans yet
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- JOB COSTING PAGE -->
+            <div id="costing-page" class="page-content">
+                <div class="section-header">
+                    <h2>Job Costing Calculator</h2>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="form-container">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Service Type</label>
+                                    <select class="form-select" id="costingService">
+                                        <option>CNC Machining</option>
+                                        <option>VMC Operations</option>
+                                        <option>Fabrication</option>
+                                        <option>Laser Cutting</option>
+                                        <option>VTL</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Quantity</label>
+                                    <input type="number" class="form-control" id="costingQty" value="1">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Unit Cost (₹)</label>
+                                    <input type="number" class="form-control" id="costingUnitCost" value="0">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Margin (%)</label>
+                                    <input type="number" class="form-control" id="costingMargin" value="20">
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn-primary-custom" onclick="calculateCosting()">
+                                        <i class="fas fa-calculator"></i> Calculate Cost
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div id="invoicesList"></div>
-                </div>
-
-                <!-- CHALLANS PAGE -->
-                <div id="challans-page" class="page-content">
-                    <h2>Challan Management</h2>
-                    <div id="challansList"></div>
-                </div>
-
-                <!-- JOB COSTING PAGE -->
-                <div id="costing-page" class="page-content">
-                    <h2>Job Costing Sheet</h2>
-                    <form id="costingForm">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Job Description</label>
-                                <input type="text" id="jobDesc" required>
+                    <div class="col-lg-4">
+                        <div class="form-container">
+                            <h5>Cost Summary</h5>
+                            <div class="mb-3">
+                                <span style="color: #6B7280; font-size: 0.9rem;">Base Cost:</span>
+                                <div style="font-weight: 700; color: var(--primary-dark); font-size: 1.25rem;">₹<span id="costBaseCost">0</span></div>
                             </div>
-                            <div class="form-group">
-                                <label>Material Cost</label>
-                                <input type="number" id="materialCost" step="0.01" required>
+                            <div class="mb-3">
+                                <span style="color: #6B7280; font-size: 0.9rem;">Margin:</span>
+                                <div style="font-weight: 700; color: var(--primary-dark); font-size: 1.25rem;">₹<span id="costMarginAmount">0</span></div>
+                            </div>
+                            <hr>
+                            <div>
+                                <span style="color: #6B7280; font-size: 0.9rem;">Final Price:</span>
+                                <div style="font-weight: 700; font-size: 1.75rem; color: var(--primary-orange);">₹<span id="costFinalPrice">0</span></div>
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Machine Hours</label>
-                                <input type="number" id="machineHours" step="0.01" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Hourly Rate (₹)</label>
-                                <input type="number" id="hourlyRate" step="0.01" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Labour Cost</label>
-                                <input type="number" id="labourCost" step="0.01" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Overhead (%)</label>
-                                <input type="number" id="overhead" step="0.01" value="15" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Profit Margin (%)</label>
-                                <input type="number" id="profitMargin" step="0.01" value="20" required>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn-primary">Calculate Cost</button>
-                    </form>
-                    <div id="costingResult"></div>
-                </div>
-
-                <!-- REPORTS PAGE -->
-                <div id="reports-page" class="page-content">
-                    <h2>Reports & Analytics</h2>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem;">
-                        <div style="background: var(--primary-light); padding: 1.5rem; border-radius: 0.5rem;">
-                            <h3>Sales Summary</h3>
-                            <p id="salesSummary">Loading...</p>
-                        </div>
-                        <div style="background: var(--primary-light); padding: 1.5rem; border-radius: 0.5rem;">
-                            <h3>Customer Acquisition</h3>
-                            <p id="customerAcquisition">Loading...</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SETTINGS PAGE -->
-                <div id="settings-page" class="page-content">
-                    <h2>Settings</h2>
-                    <div style="max-width: 600px;">
-                        <h3>Data Management</h3>
-                        <button class="btn-secondary" onclick="exportAllData()">📥 Export All Data (JSON)</button>
-                        <button class="btn-secondary" onclick="exportQuotesCSV()">📥 Export Quotes (CSV)</button>
-                        <button class="btn-secondary" onclick="exportCustomersCSV()">📥 Export Customers (CSV)</button>
-                        <br><br>
-                        <h3>Danger Zone</h3>
-                        <button class="btn-danger" onclick="if(confirm('Are you sure? This will delete all data!')) { dataStore.resetAllData(); location.reload(); }">🗑️ Reset All Data</button>
                     </div>
                 </div>
             </div>
-        </main>
+
+            <!-- REPORTS PAGE -->
+            <div id="reports-page" class="page-content">
+                <div class="section-header">
+                    <h2>Analytics & Reports</h2>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-container">
+                            <h5>Sales Overview</h5>
+                            <div class="mb-3">
+                                <span style="color: #6B7280;">Total Quotes:</span>
+                                <div style="font-weight: 700; font-size: 1.75rem;" id="reportTotalQuotes">0</div>
+                            </div>
+                            <div class="mb-3">
+                                <span style="color: #6B7280;">Accepted Quotes:</span>
+                                <div style="font-weight: 700; font-size: 1.75rem; color: var(--primary-orange);" id="reportAcceptedQuotes">0</div>
+                            </div>
+                            <div>
+                                <span style="color: #6B7280;">Conversion Rate:</span>
+                                <div style="font-weight: 700; font-size: 1.75rem;" id="reportConversionRate">0%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-container">
+                            <h5>Financial Summary</h5>
+                            <div class="mb-3">
+                                <span style="color: #6B7280;">Total Revenue:</span>
+                                <div style="font-weight: 700; font-size: 1.75rem;" id="reportTotalRevenue">₹0</div>
+                            </div>
+                            <div class="mb-3">
+                                <span style="color: #6B7280;">Active Orders:</span>
+                                <div style="font-weight: 700; font-size: 1.75rem; color: var(--primary-orange);" id="reportActiveOrders">0</div>
+                            </div>
+                            <div>
+                                <span style="color: #6B7280;">Avg Order Value:</span>
+                                <div style="font-weight: 700; font-size: 1.75rem;" id="reportAvgOrder">₹0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SETTINGS PAGE -->
+            <div id="settings-page" class="page-content">
+                <div class="section-header">
+                    <h2>Settings & Data Management</h2>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="form-container">
+                            <h5 class="mb-3">Data Export</h5>
+                            <p style="color: #6B7280; margin-bottom: 1.5rem;">Export all data from the system:</p>
+                            <div class="mb-3">
+                                <button class="btn-primary-custom me-2" onclick="exportQuotesData()">
+                                    <i class="fas fa-download"></i> Export Quotes (CSV)
+                                </button>
+                                <button class="btn-primary-custom me-2" onclick="exportCustomersData()">
+                                    <i class="fas fa-download"></i> Export Customers (CSV)
+                                </button>
+                                <button class="btn-primary-custom" onclick="exportAllData()">
+                                    <i class="fas fa-download"></i> Export All (JSON)
+                                </button>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <h5 class="mb-3">Danger Zone</h5>
+                            <p style="color: #6B7280; margin-bottom: 1.5rem;">⚠️ These actions cannot be undone:</p>
+                            <button class="btn btn-danger" onclick="resetAllData()">
+                                <i class="fas fa-trash"></i> Reset All Data
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-container" style="background-color: #f0fdf4;">
+                            <h5 style="color: #166534;">System Info</h5>
+                            <div style="font-size: 0.9rem; color: #166534; line-height: 2;">
+                                <p><strong>Version:</strong> 1.0</p>
+                                <p><strong>Storage:</strong> LocalStorage</p>
+                                <p><strong>Status:</strong> <span style="color: #10B981;">● Online</span></p>
+                                <p><strong>Last Updated:</strong> Just now</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Link to data store -->
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <!-- DataStore -->
     <script src="../backend/js/data-store.js"></script>
-    <script src="js/admin-main.js"></script>
+
+    <!-- Admin Script -->
+    <script>
+        // Page Navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                
+                document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+                
+                const page = link.dataset.page;
+                const pageEl = document.getElementById(`${page}-page`);
+                if (pageEl) {
+                    pageEl.classList.add('active');
+                    document.getElementById('pageTitle').textContent = link.textContent.trim();
+                    loadPageData(page);
+                }
+            });
+        });
+
+        // Data loading
+        function loadPageData(page) {
+            const dataStore = new DataStore();
+            
+            if (page === 'dashboard') loadDashboard(dataStore);
+            else if (page === 'customers') loadCustomers(dataStore);
+            else if (page === 'quotes') loadQuotes(dataStore);
+            else if (page === 'orders') loadOrders(dataStore);
+            else if (page === 'reports') loadReports(dataStore);
+        }
+
+        function loadDashboard(dataStore) {
+            const customers = dataStore.getCustomers();
+            const quotes = dataStore.getQuotes();
+            const orders = dataStore.getOrders();
+
+            document.getElementById('totalCustomers').textContent = customers.length;
+            document.getElementById('pendingQuotes').textContent = quotes.filter(q => q.status === 'pending').length;
+            document.getElementById('activeOrders').textContent = orders.filter(o => ['in_progress', 'pending'].includes(o.status)).length;
+            document.getElementById('totalRevenue').textContent = '₹' + orders.reduce((sum, o) => sum + (o.amount || 0), 0).toLocaleString('en-IN');
+
+            const recentQuotes = quotes.slice(-5).reverse();
+            document.getElementById('recentQuotesBody').innerHTML = recentQuotes.map(q => `
+                <tr>
+                    <td>${q.id}</td>
+                    <td>${q.fullName}</td>
+                    <td>${q.serviceType}</td>
+                    <td><span class="badge badge-${q.status}">${q.status}</span></td>
+                    <td>${new Date(q.createdAt).toLocaleDateString()}</td>
+                </tr>
+            `).join('') || '<tr><td colspan="5" class="empty-state"><i class="fas fa-inbox"></i><br>No recent quotes</td></tr>';
+
+            const recentOrders = orders.slice(-5).reverse();
+            document.getElementById('recentOrdersBody').innerHTML = recentOrders.map(o => `
+                <tr>
+                    <td>${o.id}</td>
+                    <td>${o.customerName}</td>
+                    <td>₹${(o.amount || 0).toLocaleString('en-IN')}</td>
+                    <td><span class="badge badge-${o.status || 'pending'}">${o.status || 'pending'}</span></td>
+                    <td>${new Date(o.createdAt).toLocaleDateString()}</td>
+                </tr>
+            `).join('') || '<tr><td colspan="5" class="empty-state"><i class="fas fa-inbox"></i><br>No recent orders</td></tr>';
+        }
+
+        function loadCustomers(dataStore) {
+            const customers = dataStore.getCustomers();
+            document.getElementById('customersTableBody').innerHTML = customers.map(c => `
+                <tr>
+                    <td>${c.fullName}</td>
+                    <td>${c.company}</td>
+                    <td>${c.email}</td>
+                    <td>${c.phone}</td>
+                    <td>${c.industry}</td>
+                    <td>${new Date(c.createdAt).toLocaleDateString()}</td>
+                </tr>
+            `).join('') || '<tr><td colspan="6" class="empty-state"><i class="fas fa-inbox"></i><br>No customers yet</td></tr>';
+        }
+
+        function loadQuotes(dataStore) {
+            const quotes = dataStore.getQuotes();
+            const filter = document.getElementById('quoteStatusFilter').value;
+            const filtered = filter ? quotes.filter(q => q.status === filter) : quotes;
+            
+            document.getElementById('quotesTableBody').innerHTML = filtered.map(q => `
+                <tr>
+                    <td>${q.id}</td>
+                    <td>${q.fullName}</td>
+                    <td>${q.serviceType}</td>
+                    <td>₹${(q.budget || 0).toLocaleString('en-IN')}</td>
+                    <td><span class="badge badge-${q.status}">${q.status}</span></td>
+                    <td>${new Date(q.createdAt).toLocaleDateString()}</td>
+                </tr>
+            `).join('') || '<tr><td colspan="6" class="empty-state"><i class="fas fa-inbox"></i><br>No quotes</td></tr>';
+        }
+
+        function loadOrders(dataStore) {
+            const orders = dataStore.getOrders();
+            document.getElementById('ordersTableBody').innerHTML = orders.map(o => `
+                <tr>
+                    <td>${o.id}</td>
+                    <td>${o.customerName}</td>
+                    <td>${o.serviceType}</td>
+                    <td>₹${(o.amount || 0).toLocaleString('en-IN')}</td>
+                    <td><span class="badge badge-${o.status || 'pending'}">${o.status || 'pending'}</span></td>
+                    <td>${new Date(o.dueDate || o.createdAt).toLocaleDateString()}</td>
+                </tr>
+            `).join('') || '<tr><td colspan="6" class="empty-state"><i class="fas fa-inbox"></i><br>No orders</td></tr>';
+        }
+
+        function loadReports(dataStore) {
+            const quotes = dataStore.getQuotes();
+            const orders = dataStore.getOrders();
+            
+            const totalQuotes = quotes.length;
+            const acceptedQuotes = quotes.filter(q => q.status === 'accepted').length;
+            const conversionRate = totalQuotes > 0 ? Math.round((acceptedQuotes / totalQuotes) * 100) : 0;
+            const totalRevenue = orders.reduce((sum, o) => sum + (o.amount || 0), 0);
+            const activeOrders = orders.filter(o => ['in_progress', 'pending'].includes(o.status)).length;
+            const avgOrder = activeOrders > 0 ? Math.round(totalRevenue / activeOrders) : 0;
+            
+            document.getElementById('reportTotalQuotes').textContent = totalQuotes;
+            document.getElementById('reportAcceptedQuotes').textContent = acceptedQuotes;
+            document.getElementById('reportConversionRate').textContent = conversionRate + '%';
+            document.getElementById('reportTotalRevenue').textContent = '₹' + totalRevenue.toLocaleString('en-IN');
+            document.getElementById('reportActiveOrders').textContent = activeOrders;
+            document.getElementById('reportAvgOrder').textContent = '₹' + avgOrder.toLocaleString('en-IN');
+        }
+
+        function exportQuotesData() {
+            new DataStore().exportQuotesAsCSV();
+        }
+
+        function exportCustomersData() {
+            new DataStore().exportCustomersAsCSV();
+        }
+
+        function exportAllData() {
+            new DataStore().exportAllDataAsJSON();
+        }
+
+        function resetAllData() {
+            if (confirm('⚠️ This will delete ALL data. Are you sure?')) {
+                new DataStore().resetAllData();
+                alert('✅ All data has been reset!');
+                location.reload();
+            }
+        }
+
+        function calculateCosting() {
+            const qty = parseInt(document.getElementById('costingQty').value) || 1;
+            const unitCost = parseFloat(document.getElementById('costingUnitCost').value) || 0;
+            const margin = parseFloat(document.getElementById('costingMargin').value) || 0;
+            
+            const baseCost = qty * unitCost;
+            const marginAmount = baseCost * (margin / 100);
+            const finalPrice = baseCost + marginAmount;
+            
+            document.getElementById('costBaseCost').textContent = baseCost.toLocaleString('en-IN');
+            document.getElementById('costMarginAmount').textContent = marginAmount.toLocaleString('en-IN');
+            document.getElementById('costFinalPrice').textContent = finalPrice.toLocaleString('en-IN');
+        }
+
+        window.addEventListener('load', () => {
+            loadDashboard(new DataStore());
+        });
+
+        document.getElementById('quoteStatusFilter')?.addEventListener('change', () => {
+            loadQuotes(new DataStore());
+        });
+
+        document.getElementById('exportBtn').addEventListener('click', exportAllData);
+    </script>
 </body>
 </html>
